@@ -1,0 +1,152 @@
+/*
+
+*/
+/* 
+    Created on : Oct 15, 2018, 9:31:13 AM
+    Author     : Chris Jarrett
+*/
+
+
+
+@bgDefault      : #d5e1df; // Sky Blue
+@bgHighlight    : #a0522d; // Brown
+@colDefault     : #707070; // Grey
+@colHighlight   : #e3eaa7; // Bone
+@bgHeader       : #86AF49; // Green
+@bgLogo         : #B5E7A0; // Light Green
+
+
+.body {
+    font-family: "Segoe UI";
+}
+
+#logo {
+    color: @colHighlight;
+    text-decoration: none;
+}
+
+.header {
+    background-color: @bgHeader;
+    color: @colHighlight;
+    text-align: center;
+    font-family: "Segoe UI";
+    font-weight: bolder;
+    text-shadow: 2px 2px 5px darken(@colHighlight, 60%);
+}
+
+.navbar-default {
+    background-color: @bgDefault;
+    border-color: @bgHighlight;
+    border-radius: 0;
+    font-family: "Segoe UI";
+    font-weight: bold;
+    .navbar-brand {
+        color: @colDefault;
+        &:hover, &:focus {
+            color: @colHighlight; 
+        }
+    }
+    .navbar-text {
+        color: @colDefault; 
+    }
+    .navbar-nav {
+        > li {
+            > a {
+                color: @colDefault;
+                &:hover,  &:focus {
+                    color: @colHighlight; 
+                    background-color: @bgHighlight;
+                }
+            }
+            > .dropdown-menu {
+                background-color: @bgDefault;
+                width: 100%;
+                > li {
+                    > a {
+                        font-family: "Segoe UI";
+                        font-weight: bold;
+                        color: @colDefault;
+                        &:hover,  &:focus {
+                            color: @colHighlight;
+                            background-color: @bgHighlight; 
+                        }
+                    }
+                    &.divider {
+                        background-color: @bgHighlight;
+                    }
+                }
+            }
+        }
+        > .active {
+            > a, > a:hover, > a:focus {
+                color: @colHighlight;
+                background-color: @bgHighlight; 
+            }
+        }
+        > .open {
+            > a, > a:hover, > a:focus {
+                color: @colHighlight;
+                background-color: @bgHighlight; 
+            }
+        }
+    }
+    .navbar-toggle {
+        border-color: @bgHighlight;
+        background-color: @bgHighlight;
+        &:hover, &:focus {
+            background-color: @bgHighlight;
+        }
+        .icon-bar {
+            background-color: @colHighlight;
+        }
+    }
+    .navbar-collapse,
+    .navbar-form {
+        border-color: @colDefault; 
+    }
+    .navbar-link {
+        color: @colDefault;
+        &:hover {
+            color: @colHighlight;
+            background-color: @bgHighlight;
+        }
+    }
+}
+
+.navbar .container-fluid, .navbar-collapse {
+    padding-left: 0;
+}
+
+.dropdown-menu {
+    padding: 0px;
+}
+
+.table {
+    background-color: @bgHeader;
+    border-style: solid;
+    border-color: darken(@bgHeader, 10%);
+    font-family: "Segoe UI";
+    font-weight: bold;
+}
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu {
+        > li > a {
+            color: @colDefault;
+            &:hover, &:focus {
+                color: @colHighlight; 
+                background-color: @bgHighlight;
+            }
+        }
+        > .active {
+            > a, > a:hover, > a:focus {
+                color: @colHighlight;
+                background-color: @bgHighlight; 
+            }
+        }
+    }
+        
+    .navbar-collapse{
+            padding-left:30px;
+            padding-top: 0px;
+    }
+}
