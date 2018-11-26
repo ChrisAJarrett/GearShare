@@ -14,7 +14,7 @@ CREATE TABLE users (
     access_level varchar(20) DEFAULT 'user' NOT NULL,
     first_name varchar(20) NOT NULL,
     last_name varchar(20) NOT NULL,
-    pw varchar(25) NOT NULL,
+    pw varchar(200) NOT NULL,
     user_ID int(11) NOT NULL AUTO_INCREMENT,
     PRIMARY KEY(user_ID)
 );
