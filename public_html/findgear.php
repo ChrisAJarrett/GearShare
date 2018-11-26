@@ -81,10 +81,12 @@
                         <label class="control-label" for="gearCat">Category:</label>
                         <select class="form-control" name="gearCat" id="gearCat">
                             <!--This will pull options from the DB instead of hardcoded-->
-                            <option value="1">Life Vest</option>
-                            <option value="2">Snow Skis</option>
-                            <option value="3">Kayak</option>
-                            <option value="4">Snow Board</option>
+                            <?php
+                                $sql = 'SELECT * FROM gear_category;';
+
+                                foreach ($db->query($sql) as $category):?>
+                                <option value="<?php echo $category['category_ID']?>"><?php echo $category['name']?></option>
+                                <?php endforeach;?>
                         </select>
                     </div>
                     <div class="col-xs-5 col-md-2">
