@@ -100,7 +100,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="row" style="padding-top: 1vw">
+                
+                    <!--Date Search Function - Not in Current Version-->
+<!--                <div class="row" style="padding-top: 1vw">
                     <div class="col-xs-offset-1 col-xs-5 col-md-offset-2 col-md-2">
                         <label class="control-label" for="startDate">From:(Not Implemented)</label>
                         <input class="form-control" type="date" name="startDate" id="startDate">
@@ -109,7 +111,7 @@
                     <div class="col-xs-5 col-md-2">
                         <label class="control-label" for="startDate">To:(Not Implemented)</label>
                         <input class="form-control" type="date" name="endDate" id="endDate">
-                    </div>
+                    </div>-->
                     <div class="col-md-6"></div>
                 </div>
             </div>

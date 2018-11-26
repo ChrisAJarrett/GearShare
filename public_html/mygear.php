@@ -83,64 +83,65 @@ require_once('util/database.php');
                 <div class="table-responsive table-condensed">
                     <table class="table" id="ResultTable">
                         <tbody>
-                        <tr>
+
                             <?php
                             $sql = "SELECT * from gear WHERE owner_ID=1";
                             foreach ($db->query($sql) as $row) {
-                                echo "</tr><tr>";
+                                echo "<tr>";
                                 echo '<td>';
                                 echo '<img src="data:image/jpg;base64,' . base64_encode($row["photo"]) . '"/>';
                                 echo "</td>";
                                 echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
-                                    $row['gear_size'] . "</p>";
+                                $row['gear_size'] . "</p>";
                                 echo "<p>Description: " . $row['description'] . "</p></td>";
                                 echo '<td>
                                         <input type="checkbox" name="inuse" value="inuse" disabled>In Use?</input>
                                       </td>
                                       <td>
-                                        <button type="button" class="btn btn-basic btn-lg edit disabled" id="'.$row["gear_ID"]."edit".'">Edit</button>
+                                        <button type="button" class="btn btn-basic btn-lg edit disabled" id="' . $row["gear_ID"] . "edit" . '">Edit</button>
                                       </td>
                                       <td>
-                                        <button type="button" class="btn btn-basic btn-lg delete" id="'.$row['gear_ID']."delete".'">Delete</button>
-                                      </td>';
+                                        <button type="button" class="btn btn-basic btn-lg delete" id="' . $row['gear_ID'] . "delete" . '">Delete</button>
+                                      </td></tr>';
                             }
-                            
-                            echo "</tbody></table>";
                             ?>
-                            </div>
-                        <form action="addgear.php">
-                            <button class="btn btn-lg col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4">Add Gear</button>
-                        </form>
+                        </tbody></table>
                 </div>
+                <form action="addgear.php">
+                    <button class="btn btn-lg col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4">Add Gear</button>
+                </form>
             </div>
+        </div>
+        
+        <script>
+            $(document).ready(function () {
+                /* Delete Button */
+                $("button.delete").click(function () {
+                    var button_id = this.id;
+                    button_id = button_id.substring(0, button_id.indexOf('d'));
+                    window.location.href = "mygear.php?delete=" + button_id;
+                });
+                /* Edit Button */
+                $("button.edit").click(function () {
+                    var button_id = this.id;
+                    button_id = button_id.substring(0, button_id.indexOf('e'));
+//            window.location.href = "mygear.php?edit=" + button_id;
+                });
+            });
+        </script>
     </body>
 </html>
-<script>
-    $(document).ready(function(){
-        /* Delete Button */
-        $("button.delete").click(function() {
-            var button_id = this.id;
-            button_id = button_id.substring(0, button_id.indexOf('d'));
-            window.location.href = "mygear.php?delete=" + button_id;
-        });
-        /* Edit Button */
-        $("button.edit").click(function() {
-            var button_id = this.id;
-            button_id = button_id.substring(0, button_id.indexOf('e'));
-//            window.location.href = "mygear.php?edit=" + button_id;
-        });
-    });
-</script>
+
 <?php
 //    function deleteEntry() {
-        if(isset($_GET["delete"])) {
-            $gear_id = $_GET["delete"];
-            $sql = "DELETE FROM gear WHERE gear_ID=$gear_id";
-            $db->exec($sql);
-            
-            echo "<script>location.replace('mygear.php')</script>";
-        }
-        
-        // HIDE THE TABLE VALUE ON CLICK  JQUERY "on" ?
+if (isset($_GET["delete"])) {
+    $gear_id = $_GET["delete"];
+    $sql = "DELETE FROM gear WHERE gear_ID=$gear_id";
+    $db->exec($sql);
+
+    echo "<script>location.replace('mygear.php')</script>";
+}
+
+// HIDE THE TABLE VALUE ON CLICK  JQUERY "on" ?
 //    }
 ?>

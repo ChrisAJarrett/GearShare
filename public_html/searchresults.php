@@ -1,6 +1,6 @@
 <?php
 //    require_once('util/secure_conn.php');
-    require_once('util/database.php');
+require_once('util/database.php');
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
 
         <style>
             /*Centers text in the table*/
-            
+
             .table th, .table tbody > tr > td {
                 text-align: left;
                 vertical-align: middle;
@@ -77,60 +77,71 @@
         </nav>
         <!--Table will be populated with search results using PHP-->
         <?php
-        
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $category = $_POST["gearCat"];
-                $gear_size = $_POST["size"];
-                $search = $_POST["search"];
-                
-                $sql = "SELECT name FROM gear_category WHERE category_ID = $category";
-                $getquery = $db->prepare($sql);
-                $getquery->execute();
-                $row = $getquery->fetch();
-                $category = $row['name'];
-                
-            }
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $category = $_POST["gearCat"];
+            $gear_size = $_POST["size"];
+            $search = $_POST["search"];
+
+            $sql = "SELECT name, size_matters FROM gear_category WHERE category_ID = $category";
+            $getquery = $db->prepare($sql);
+            $getquery->execute();
+            $row = $getquery->fetch(PDO::FETCH_ASSOC);
+            $size_bool = $row['size_matters'];
+            
+        }
         ?>
         <div class="container-fluid">
             <div class="col-md-offset-2 col-md-8">
                 <div class="table-responsive table-condensed">
                     <table class="table" id="ResultTable">
-                        <tr>
-                            <tr>
-                            <?php
-                            $sql = "SELECT gear.*, users.username, users.email"
-                                   ." FROM gear"
-                                   ." INNER JOIN users on gear.owner_ID=users.user_ID";
-                            
-                            foreach ($db->query($sql) as $row) {
-                                echo "</tr><tr>";
-                                echo '<td>';
-                                echo '<img src="data:image/jpg;base64,' . base64_encode($row["photo"]) . '"/>';
-                                echo "</td>";
-                                echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
-                                    $row['gear_size'] . "</p>";
-                                echo "<p>Description: " . $row['description'] . "</p>"
-                                        . "Owner: ". $row['username']."</td>";
-                                echo '<td>
-                                     <button type="button" class="btn btn-basic btn-lg request" id="'.$row["gear_ID"]."request".'">Request Gear</button>
-                                      </td>';
-                            }
-                            
-                            echo "</tbody></table>";
-                            ?>
+                        <tbody>
+<?php
+
+    if($size_bool == 0 || $gear_size == 'any') {
+        $sql = "SELECT gear.*, users.username, users.email"
+        . " FROM gear"
+        . " INNER JOIN users on gear.owner_ID=users.user_ID"
+        . " WHERE category = $category";
+    } else {
+        $sql = "SELECT gear.*, users.username, users.email"
+        . " FROM gear"
+        . " INNER JOIN users on gear.owner_ID=users.user_ID"
+        . " WHERE (category = $category)"
+        . " AND (gear_size = '$gear_size' OR gear_size = 'any')";
+    }
+
+
+foreach ($db->query($sql) as $row) {
+    echo "<tr>";
+    echo '<td>';
+    echo '<img src="data:image/jpg;base64,' . base64_encode($row["photo"]) . '"/>';
+    echo "</td>";
+    echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
+    $row['gear_size'] . "</p>";
+    echo "<p>Description: " . $row['description'] . "</p>"
+    . "Owner: " . $row['username'] . "</td>";
+    echo '<td>
+                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $row["gear_ID"] . "request" . '">Request Gear</button>
+                                      </td></tr>';
+}
+
+echo "</tbody></table>";
+?>
                     </table>
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                /* Request Button */
+                $("button.request").click(function () {
+                    var button_id = this.id;
+                    button_id = button_id.substring(0, button_id.indexOf('d'));
+                    window.location.href = "searchresults.php?request=" + button_id;
+                });
+            });
+        </script>
     </body>
+
 </html>
-<script>
-    $(document).ready(function(){
-        /* Request Button */
-        $("button.request").click(function() {
-            var button_id = this.id;
-            button_id = button_id.substring(0, button_id.indexOf('d'));
-            window.location.href = "searchresults.php?request=" + button_id;
-        });
-    });
-</script>
+
