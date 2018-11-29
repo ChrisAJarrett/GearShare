@@ -87,7 +87,6 @@ require_once('util/database.php');
             $getquery->execute();
             $row = $getquery->fetch(PDO::FETCH_ASSOC);
             $size_bool = $row['size_matters'];
-            
         }
         ?>
         <div class="container-fluid">
@@ -95,49 +94,85 @@ require_once('util/database.php');
                 <div class="table-responsive table-condensed">
                     <table class="table" id="ResultTable">
                         <tbody>
-<?php
+                            <?php
+                            if ($size_bool == 0 || $gear_size == 'any') {
+                                $sql = "SELECT gear.*, users.username, users.email"
+                                        . " FROM gear"
+                                        . " INNER JOIN users on gear.owner_ID=users.user_ID"
+                                        . " WHERE category = $category";
+                            } else {
+                                $sql = "SELECT gear.*, users.username, users.email"
+                                        . " FROM gear"
+                                        . " INNER JOIN users on gear.owner_ID=users.user_ID"
+                                        . " WHERE (category = $category)"
+                                        . " AND (gear_size = '$gear_size' OR gear_size = 'any')";
+                            }
 
-    if($size_bool == 0 || $gear_size == 'any') {
-        $sql = "SELECT gear.*, users.username, users.email"
-        . " FROM gear"
-        . " INNER JOIN users on gear.owner_ID=users.user_ID"
-        . " WHERE category = $category";
-    } else {
-        $sql = "SELECT gear.*, users.username, users.email"
-        . " FROM gear"
-        . " INNER JOIN users on gear.owner_ID=users.user_ID"
-        . " WHERE (category = $category)"
-        . " AND (gear_size = '$gear_size' OR gear_size = 'any')";
-    }
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute();
 
+                            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-foreach ($db->query($sql) as $row) {
-    echo "<tr>";
-    echo '<td>';
-    echo '<img src="data:image/jpg;base64,' . base64_encode($row["photo"]) . '"/>';
-    echo "</td>";
-    echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
-    $row['gear_size'] . "</p>";
-    echo "<p>Description: " . $row['description'] . "</p>"
-    . "Owner: " . $row['username'] . "</td>";
-    echo '<td>
-                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $row["gear_ID"] . "request" . '">Request Gear</button>
+                            foreach ($result as $key => $row) {
+
+                                echo "<tr>";
+                                echo '<td>';
+                                echo '<img src="data:image/jpg;base64,' . base64_encode($row["photo"]) . '"/>';
+                                echo "</td>";
+                                echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
+                                $row['gear_size'] . "</p>";
+                                echo "<p>Description: " . $row['description'] . "</p>"
+                                . "Owner: " . $row['username'] . "</td>";
+//    echo '<td>
+//                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $row["gear_ID"] . "request" . '">Request Gear</button>
+//                                      </td></tr>';
+                                echo '<td>
+                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $key . "request" . '">Request Gear</button>
                                       </td></tr>';
-}
+                            }
 
-echo "</tbody></table>";
-?>
+                            echo "</tbody></table>";
+                            ?>
                     </table>
                 </div>
             </div>
         </div>
         <script>
+
             $(document).ready(function () {
                 /* Request Button */
                 $("button.request").click(function () {
                     var button_id = this.id;
-                    button_id = button_id.substring(0, button_id.indexOf('d'));
-                    window.location.href = "searchresults.php?request=" + button_id;
+                    // Pick the button
+                    button_id = button_id.substring(0, button_id.indexOf('r'));
+                    
+                    $(this).text('Request Sent');
+                    this.disabled = true;
+                    
+                    
+                    
+                    
+                    <?php foreach($result as &$row) {
+                        unset($row['post_date'],$row['photo']);
+                        }
+                    ?>
+                                
+                    var search_array = <?php echo json_encode($result) ?>;
+                    
+                    
+                    /* TEST USERNAME FOR FROM */
+                    var fromEmail = search_array[button_id]['email'];
+                    var fromUser = search_array[button_id]['username'];
+            
+                    $.ajax({
+                        method: "POST",
+                        url: "email.php",
+                        data: { toUser: search_array[button_id]['username'], toEmail: search_array[button_id]['email'],
+                                item: search_array[button_id]['item_name'], fromUser: fromUser, fromEmail: fromEmail }
+                    })
+//                        .done(function( msg ) {
+//                        alert( "Request Email Sent: " + msg );
+//                    }); Debug Message Purpose
                 });
             });
         </script>

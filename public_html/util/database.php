@@ -1,5 +1,5 @@
 <?php
-$dsn = 'mysql:host=localhost;dbname=gearshare';
+$dsn = 'mysql:host=localhost;dbname=gearshare;charset=utf8';
 $username = 'root';
 $password = '';
 $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
