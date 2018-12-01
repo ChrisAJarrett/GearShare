@@ -94,11 +94,15 @@ require_once('util/database.php');
                                 echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
                                 $row['gear_size'] . "</p>";
                                 echo "<p>Description: " . $row['description'] . "</p></td>";
-                                echo '<td>
-                                        <input type="checkbox" name="inuse" value="inuse" disabled>In Use?</input>
-                                      </td>
+                                echo '<td>';
+                                    if($row['available'] == 0) {
+                                        echo '<input type="checkbox" name="inuse" value="inuse" checked disabled>In Use?</input>';
+                                    } else {
+                                        echo '<input type="checkbox" name="inuse" value="inuse" disabled>In Use?</input>';
+                                    }
+                                echo '</td>
                                       <td>
-                                        <button type="button" class="btn btn-basic btn-lg edit disabled" id="' . $row["gear_ID"] . "edit" . '">Edit</button>
+                                        <button type="button" class="btn btn-basic btn-lg edit" id="' . $row["gear_ID"] . "edit" . '">Edit</button>
                                       </td>
                                       <td>
                                         <button type="button" class="btn btn-basic btn-lg delete" id="' . $row['gear_ID'] . "delete" . '">Delete</button>
@@ -125,7 +129,7 @@ require_once('util/database.php');
                 $("button.edit").click(function () {
                     var button_id = this.id;
                     button_id = button_id.substring(0, button_id.indexOf('e'));
-//            window.location.href = "mygear.php?edit=" + button_id;
+                    window.location.href = "editgear.php?edit=" + button_id;
                 });
             });
         </script>

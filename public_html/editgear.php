@@ -3,6 +3,19 @@
     require_once('util/database.php');
 ?>
 
+<?php
+    $gearID = $_GET['edit'];
+    
+    $sql = "SELECT * FROM gear WHERE gear_ID = $gearID";
+    
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $cat = $row['category'];
+    $size = $row['gear_size'];
+?>
+
 <!DOCTYPE html>
 <!--
     Created by: Chris Jarrett
@@ -19,7 +32,6 @@
         <link rel="stylesheet/less" type="text/css" href="css/style.less">
         <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.7.1/less.min.js" ></script>
         <!--        <script src="less.js" type="text/javascript"></script>-->
-
     </head>
 
     <body>
@@ -64,12 +76,13 @@
         </nav>
 
         <!--Search-->
-        <form class="form-horizontal" action="./processNewGear.php" method="post" enctype="multipart/form-data">
+        <form class="form-horizontal" action="./processEditGear.php" method="post" enctype="multipart/form-data">
+            <input type ="hidden" id ="edit" name="edit" value="<?php echo $gearID ?>">
             <div class="container-fluid" style="padding-top: 2vw">
                 <div class="row" style="padding-top: 1vw">          
                     <div class="col-xs-offset-1 col-xs-7 col-md-offset-2 col-md-2">
                         <label class="control-label" for="labelname">Item Name:</label>
-                        <input class="form-control" type="text" name ="itemname" id="itemname" size="30">
+                        <input class="form-control" type="text" name ="itemname" id="itemname" size=30 value="<?php echo $row['item_name'] ?>">
                     </div>
                     <div class="col-xs-offset-1 col-xs-8 col-md-offset-0 col-md-2">
                         <label class="control-label" for="labelpic">Photo:</label>
@@ -82,39 +95,44 @@
                         <label class="control-label" for="gearCat">Category:</label>
                         <select class="form-control" name="gearCat" id="gearCat">
                             <!--This will pull options from the DB instead of hardcoded-->
-                            <option value="1">Life Vest</option>
-                            <option value="2">Snow Skis</option>
-                            <option value="3">Kayak</option>
-                            <option value="4">Snowboard</option>
+                            <option value="1" <?php if($cat == 1){ echo "selected"; } ?>>Life Vest</option>
+                            <option value="2" <?php if($cat == 2){ echo "selected"; } ?>>Snow Skis</option>
+                            <option value="3" <?php if($cat == 3){ echo "selected"; } ?>>Kayak</option>
+                            <option value="4" <?php if($cat == 4){ echo "selected"; } ?>>Snowboard</option>
                         </select>
                     </div>
                     <div class="col-xs-5 col-md-2">
                         <label class="control-label" for="size">Size:</label>
                         <select class="form-control" name="size" id="size">
-                            <option value="any">Any Size</option>
-                            <option value="small">Small</option>
-                            <option value="medium">Medium</option>
-                            <option value="large">Large</option>
-                            <option value="xlarge">Extra Large</option>
+                            <option value="any" <?php if($size == 'any'){ echo "selected"; } ?>>Any Size</option>
+                            <option value="small" <?php if($size == 'small'){ echo "selected"; } ?>>Small</option>
+                            <option value="medium" <?php if($size == 'medium'){ echo "selected"; } ?>>Medium</option>
+                            <option value="large" <?php if($size == 'large'){ echo "selected"; } ?>>Large</option>
+                            <option value="xlarge" <?php if($size == 'xlarge'){ echo "selected"; } ?>>Extra Large</option>
                         </select>
                     </div>
                 </div>
                 <div class="row" style="padding-top: 1vw">
                     <div class="col-xs-offset-1 col-xs-5 col-md-offset-2 col-md-2">
-<!--                        <label class="control-label" for="startDate">From:</label>
-                        <input class="form-control" type="date" name="startDate" id="startDate">-->
+                        <!--<label class="control-label" for="startDate">From:</label>-->
+                        <!--<input class="form-control" type="date" name="startDate" id="startDate">-->
                     </div>
 
                     <div class="col-xs-5 col-md-2">
-<!--                        <label class="control-label" for="startDate">To:</label>
-                        <input class="form-control" type="date" name="endDate" id="endDate">-->
+                        <!--<label class="control-label" for="startDate">To:</label>-->
+                        <!--<input class="form-control" type="date" name="endDate" id="endDate">-->
                     </div>
                     <div class="col-md-6"></div>
                 </div>
                 <div class="row" style="padding-top: 1vw">
+                    <div class="col-xs-offset-2 col-xs-6 col-md-offset-2 col-md-3">
+                        <input type="checkbox" name="inuse" value="inuse">In Use?</input>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 1vw">
                     <div class="col-xs-offset-1 col-xs-5 col-md-offset-2 col-md-2">
                         <label class="control-label" for="description">Description</label>
-                        <textarea name="description" id="description" rows="5" cols="45"></textarea>
+                        <textarea name="description" id="description" rows="5" cols="45"><?php echo $row['description'] ?></textarea>
                     </div>
                 </div>
                 <div class="row" style="padding-top:2vw">

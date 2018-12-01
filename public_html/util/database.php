@@ -1,4 +1,6 @@
 <?php
+
+/* LOCAL VERSION */
 $dsn = 'mysql:host=localhost;dbname=gearshare;charset=utf8';
 $username = 'root';
 $password = '';
