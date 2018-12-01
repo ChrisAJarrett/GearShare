@@ -1,7 +1,7 @@
 <?php
 
 require_once('util/database.php');
-sessoin_start()
+sessoin_start();
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
