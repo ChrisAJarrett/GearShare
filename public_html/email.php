@@ -1,7 +1,7 @@
 <?php
     
     require("C:\sendgrid-php\sendgrid-php\sendgrid-php.php"); //ALTER FOR LIVE
-    $sendgridAPI = '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';
+    //$sendgridAPI = '';
     
     $toUser = $_POST['toUser'];
     $toEmail = $_POST['toEmail'];
