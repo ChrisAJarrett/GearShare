@@ -1,10 +1,9 @@
-/* Uses "SendGrid" third party e-mail API to send e-mail. This is a placeholder
-   since I don't know what the ps11 SMTP workings are */
+
 <?php
-    
+    /* Uses "SendGrid" third party e-mail API to send e-mail. This is a placeholder
+   since I don't know what the ps11 SMTP workings are */
     require("C:\sendgrid-php\sendgrid-php\sendgrid-php.php"); //ALTER FOR LIVE
-//    require("../../sendgrid-php/sendgrid-php.php"); // LIVE VERSION
-    $sendgridAPI = ''; // ADD API KEY
+    //$sendgridAPI = '';
     
     $toUser = $_POST['toUser'];
     $toEmail = $_POST['toEmail'];
