@@ -1,3 +1,7 @@
+<?php
+require_once('util/main.php');
+require_once('util/database.php');
+?>
 <!DOCTYPE html>
 <!--
     Created by: Chris Jarrett
@@ -48,9 +52,14 @@
                                 Account
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="myaccount.php">My Account</a></li>
-                                <li><a href="messages.html">Messages</a></li>
-                                <li><a href="#">Logout</a></li> <!-- For logout I will use a script? -->
+                                <?php
+                                if (isset($_SESSION['user'])) :
+                                    ?>
+                                    <li><a href="<?php echo 'myaccount.php'; ?>">My Account</a></li>
+                                    <li><a href="<?php echo 'accountProcess.php?action=logout'; ?>">Logout</a>
+                                    <?php else: ?>
+                                    <li><a href="<?php echo 'accountProcess.php' ?>">Login/Register</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
                     </ul>
@@ -76,11 +85,20 @@
                     </div>
 
                     <div class="row" style="padding-top:2vw">
-                        <div class="col-xs-offset-4 col-xs-2 col-md-offset-5 col-md-2">
-                            <button class="btn btn-basic">Login</button>
+                        <div class="col-xs-offset-4 col-xs-2 col-md-offset-5 col-md-1">
+                            <button class="btn btn-basic" type="submit" value="login">Login</button>
+                            <input type="hidden" name="action" value="login">
+                            </form>
+
+                        </div>
+                        <div class="col-xs-1 col-md-1">
+                            <form action="accountProcess.php" method="post">
+                                <input type="hidden" name="action" value="view_register">
+                                <button class="btn btn-basic" type="submit" value="register">Register</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-        </form>
-    </body>
-</html>
+
+                </body>
+                </html>

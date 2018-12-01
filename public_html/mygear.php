@@ -1,5 +1,8 @@
 <?php
+require_once('util/main.php');
 require_once('util/database.php');
+require_once('accountProcess.php');
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -65,9 +68,14 @@ require_once('util/database.php');
                                 Account
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="myaccount.php">My Account</a></li>
-                                <li><a href="messages.html">Messages</a></li>
-                                <li><a href="#">Logout</a></li>
+                                <?php
+                                if (isset($_SESSION['user'])) :
+                                ?>
+                                    <li><a href="<?php echo 'myaccount.php'; ?>">My Account</a></li>
+                                    <li><a href="<?php echo 'accountProcess.php?action=logout'; ?>">Logout</a>
+                                <?php else: ?>
+                                    <li><a href="<?php echo 'accountProcess.php' ?>">Login/Register</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
                     </ul>
@@ -85,7 +93,8 @@ require_once('util/database.php');
                         <tbody>
 
                             <?php
-                            $sql = "SELECT * from gear WHERE owner_ID=1";
+                            $owner_ID = $_SESSION['user']['user_ID'];
+                            $sql = "SELECT * from gear WHERE owner_ID= $owner_ID";
                             foreach ($db->query($sql) as $row) {
                                 echo "<tr>";
                                 echo '<td>';

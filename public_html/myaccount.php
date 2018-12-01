@@ -1,3 +1,20 @@
+<?php
+    require_once('util/main.php');
+    require_once('util/database.php');
+    
+    $action = filter_input(INPUT_POST, 'action');
+    if ($action == NULL) {
+        $action = filter_input(INPUT_GET, 'action');
+    if ($action == NULL) {        
+        $action = 'view_login';
+        header('Location: accountProcess.php');
+        if (isset($_SESSION['user'])) {
+            $action = 'view_account';
+            header('Location: accountProcess.php');
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <!--
     Created by: Chris Jarrett
@@ -48,9 +65,14 @@
                                 Account
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="myaccount.php">My Account</a></li>
-                                <li><a href="messages.html">Messages</a></li>
-                                <li><a href="#">Logout</a></li> <!-- For logout I will use a script? -->
+                                <?php
+                                if (isset($_SESSION['user'])) :
+                                ?>
+                                    <li><a href="<?php echo 'myaccount.php'; ?>">My Account</a></li>
+                                    <li><a href="<?php echo 'accountProcess.php?action=logout'; ?>">Logout</a>
+                                <?php else: ?>
+                                    <li><a href="<?php echo 'accountProcess.php' ?>">Login/Register</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
                     </ul>

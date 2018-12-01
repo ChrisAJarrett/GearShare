@@ -1,6 +1,6 @@
 <?php
-
-require_once('util/database.php');
+    require_once('util/main.php');
+    require_once('util/database.php');
 
 $nameErr = $description = $image = "";
 

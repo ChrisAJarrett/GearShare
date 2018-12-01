@@ -1,6 +1,6 @@
 <?php
-
-require_once('util/database.php');
+    require_once('util/main.php');
+    require_once('util/database.php');
 
 $nameErr = $description = $image = "";
 
@@ -23,15 +23,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     $dateTime = date("Y-m-d H:i:s");
-    $owner_ID = '1'; // TEST , HARDCODED WAITING FOR ACCOUNT/LOGIN SYSTEM
     $category = $_POST["gearCat"];
     $gear_size = $_POST["size"];
-    $owner_ID = "";
+    $owner_ID = $_SESSION['user']['user_ID'];
 
     
     $sql = "INSERT INTO gear (item_name, post_date, photo, description, "
             . "owner_ID, category, gear_size, available) VALUES ('$name', '$dateTime',
-                '$imgContent', '$description', '1' , '$category', '$gear_size', '1')";
+                '$imgContent', '$description', $owner_ID , '$category', '$gear_size', '1')";
 //    
 //    $db->exec($sql);
     

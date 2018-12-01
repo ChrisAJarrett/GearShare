@@ -1,6 +1,7 @@
 <?php
-//    require_once('util/secure_conn.php');
-require_once('util/database.php');
+    require_once('util/main.php');
+    //    require_once('util/secure_conn.php');
+    require_once('util/database.php');
 ?>
 
 <!DOCTYPE html>
@@ -66,9 +67,14 @@ require_once('util/database.php');
                                 Account
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="myaccount.php">My Account</a></li>
-                                <li><a href="messages.html">Messages</a></li>
-                                <li><a href="#">Logout</a></li>
+                                <?php
+                                if (isset($_SESSION['user'])) :
+                                ?>
+                                    <li><a href="<?php echo 'myaccount.php'; ?>">My Account</a></li>
+                                    <li><a href="<?php echo 'accountProcess.php?action=logout'; ?>">Logout</a>
+                                <?php else: ?>
+                                    <li><a href="<?php echo 'accountProcess.php' ?>">Login/Register</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
                     </ul>
@@ -146,6 +152,13 @@ require_once('util/database.php');
                     // Pick the button
                     button_id = button_id.substring(0, button_id.indexOf('r'));
                     
+                    <?php
+                        if (!isset($_SESSION['user'])) {
+                            echo 'window.location.href = "accountProcess.php";';
+                        }
+                    ?>
+                            
+                         
                     $(this).text('Request Sent');
                     this.disabled = true;
                     

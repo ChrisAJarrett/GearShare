@@ -1,7 +1,7 @@
 <?php
-
+require_once('util/main.php');
 require_once('util/database.php');
-sessoin_start();
+
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -66,7 +66,7 @@ function is_valid_customer_login($username, $password) {
 }
 switch($action) {
     case 'view_register':
-        include register.php;
+        include 'register.php';
         break;
     case 'register':
         $username = filter_input(INPUT_POST, 'username');
@@ -98,7 +98,7 @@ switch($action) {
         break;
         
         case 'view_login':
-            include 'login.php';
+            header('Location:login.php');
             break;
         
         case 'login':
@@ -112,13 +112,21 @@ switch($action) {
             break;
         } else {
             $password_message = 'Login failed. Invalid username or password.';
-            include 'login.php';
+            header('Location: ./login.php');
             break;
         }
         
+        case 'view_account':
+            header('Location: ./mygear.php');
+            break;
+        
+        case 'view_login':
+            header('Location: ./login.php');
+            break;
+        
         case 'logout':
             unset($_SESSION['user']);
-            redirect('.');
+            header('Location: index.php');
             break;
 }
 ?>
