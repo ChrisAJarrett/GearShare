@@ -86,7 +86,7 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $category = $_POST["gearCat"];
             $gear_size = $_POST["size"];
-            $search = $_POST["search"];
+//            $search = $_POST["search"];
 
             $sql = "SELECT name, size_matters FROM gear_category WHERE category_ID = $category";
             $getquery = $db->prepare($sql);
