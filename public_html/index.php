@@ -1,7 +1,6 @@
 <?php
     require_once('util/main.php');
     require_once('util/database.php');
-    
 ?>
 <!DOCTYPE html>
 <!--
@@ -63,6 +62,13 @@
                                 <?php endif; ?>
                             </ul>
                         </li>
+                        <?php 
+                            if(isset($_SESSION['user'])) {
+                            if($_SESSION['user']['access_level'] == 'admin') {
+                            echo '<li><a href="adminUsers.php">Admin Control Panel</a></li>';
+                        }
+                            }
+                        ?>
                     </ul>
                 </div>
             </div>

@@ -2,8 +2,9 @@
 require_once('util/main.php');
 require_once('util/database.php');
 
-if(!isset($_SESSION['user'])) {
-    header('Location: login.php');
+// Admins only
+if (!$_SESSION['user']['access_level'] == 'admin') {
+    header ('Location: index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -96,35 +97,19 @@ if(!isset($_SESSION['user'])) {
 
                             <?php
                             $owner_ID = $_SESSION['user']['user_ID'];
-                            $sql = "SELECT * from gear WHERE owner_ID= $owner_ID";
+                            $sql = "SELECT * from users";
                             foreach ($db->query($sql) as $row) {
                                 echo "<tr>";
-                                echo '<td>';
-                                echo '<img src="data:image/jpg;base64,' . base64_encode($row["photo"]) . '"/>';
-                                echo "</td>";
-                                echo "<td><p style='text-transform:capitalize'>Item: " . $row['item_name'] . ", Size: " .
-                                $row['gear_size'] . "</p>";
-                                echo "<p>Description: " . $row['description'] . "</p></td>";
-                                echo '<td>';
-                                    if($row['available'] == 0) {
-                                        echo '<input type="checkbox" name="inuse" value="inuse" checked disabled>In Use?</input>';
-                                    } else {
-                                        echo '<input type="checkbox" name="inuse" value="inuse" disabled>In Use?</input>';
-                                    }
-                                echo '</td>
-                                      <td>
-                                        <button type="button" class="btn btn-basic btn-lg edit" id="' . $row["gear_ID"] . "edit" . '">Edit</button>
-                                      </td>
-                                      <td>
-                                        <button type="button" class="btn btn-basic btn-lg delete" id="' . $row['gear_ID'] . "delete" . '">Delete</button>
-                                      </td></tr>';
+                                echo "<td><p style='text-transform:capitalize'>User: " . $row['username'] . ", Name: " .
+                                $row['first_name'] . " " . $row['last_name'] . "</p>";
+                                echo "<p>Email: " . $row['email'] . "</p></td>";
+                                if(!$row['access_level'] == 'admin') {
+                                echo '<td><button type="button" class="btn btn-basic btn-lg delete" id="' . $row['user_ID'] . "delete" . '">Delete</button></td></tr>';
+                                }
                             }
                             ?>
                         </tbody></table>
                 </div>
-                <form action="addgear.php">
-                    <button class="btn btn-lg col-xs-offset-4 col-xs-4 col-md-offset-4 col-md-4">Add Gear</button>
-                </form>
             </div>
         </div>
         
@@ -134,13 +119,7 @@ if(!isset($_SESSION['user'])) {
                 $("button.delete").click(function () {
                     var button_id = this.id;
                     button_id = button_id.substring(0, button_id.indexOf('d'));
-                    window.location.href = "mygear.php?delete=" + button_id;
-                });
-                /* Edit Button */
-                $("button.edit").click(function () {
-                    var button_id = this.id;
-                    button_id = button_id.substring(0, button_id.indexOf('e'));
-                    window.location.href = "editgear.php?edit=" + button_id;
+                    window.location.href = "adminUsers.php?delete=" + button_id;
                 });
             });
         </script>
@@ -151,10 +130,10 @@ if(!isset($_SESSION['user'])) {
 //    function deleteEntry() {
 if (isset($_GET["delete"])) {
     
-    $gear_id = $_GET["delete"];
-    $sql = "DELETE FROM gear WHERE gear_ID=$gear_id";
+    $user_id = $_GET["delete"];
+    $sql = "DELETE FROM users WHERE user_ID=$user_id";
     $db->exec($sql);
-    echo "<script>location.replace('mygear.php')</script>";
+    echo "<script>location.replace('adminUsers.php')</script>";
     
 }
 ?>

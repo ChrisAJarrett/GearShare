@@ -1,5 +1,6 @@
 
 <?php
+    require_once('util/main.php');
     /* Uses "SendGrid" third party e-mail API to send e-mail. This is a placeholder
    since I don't know what the ps11 SMTP workings are */
     require("C:\sendgrid-php\sendgrid-php\sendgrid-php.php"); //ALTER FOR LIVE

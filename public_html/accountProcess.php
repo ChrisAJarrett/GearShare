@@ -84,11 +84,6 @@ switch($action) {
             include 'register.php';
             break;
         }
-
-        // Validate the data for the customer
-//        if (is_valid_customer_email($email)) {
-//            display_error('The e-mail address ' . $email . ' is already in use.');
-//        }
         
         //Add user
         $userID = addUser($username, $email, $password, $fname, $lname);
@@ -126,6 +121,7 @@ switch($action) {
         
         case 'logout':
             unset($_SESSION['user']);
+            session_destroy();
             header('Location: index.php');
             break;
 }

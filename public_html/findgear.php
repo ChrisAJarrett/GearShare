@@ -73,7 +73,10 @@
             <div class="container-fluid" style="padding-top: 2vw">
                 <div class="row" style="padding-top: 1vw">          
                     <div class="col-xs-offset-1 col-xs-7 col-md-offset-2 col-md-2">
-                        <input class="form-control" type="text" name ="search" id="search" size="30">
+<!--                        Text search disabled. Regex or Mysql "LIKE" search.
+                        Is a text-based search even useful for this project given
+                        the category/sizes?-->
+                        <input class="form-control" type="text" name ="search" id="search" size="30" disabled>
                         
                     </div>
                     <div class="col-xs-4 col-md-8">
@@ -124,3 +127,15 @@
         </form>
     </body>
 </html>
+
+<?php
+//    function deleteEntry() {
+if (isset($_GET["delete"])) {
+    
+    $gear_id = $_GET["delete"];
+    $sql = "DELETE FROM gear WHERE gear_ID=$gear_id";
+    $db->exec($sql);
+    echo "<script>location.replace('findgear.php')</script>";
+    
+}
+?>

@@ -129,12 +129,13 @@
                                 $row['gear_size'] . "</p>";
                                 echo "<p>Description: " . $row['description'] . "</p>"
                                 . "Owner: " . $row['username'] . "</td>";
-//    echo '<td>
-//                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $row["gear_ID"] . "request" . '">Request Gear</button>
-//                                      </td></tr>';
                                 echo '<td>
-                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $key . "request" . '">Request Gear</button>
-                                      </td></tr>';
+                                     <button type="button" class="btn btn-basic btn-lg request" id="' . $row['gear_ID'] . "request" . '">Request Gear</button>
+                                      </td>';
+                                if((isset($_SESSION['user'])) && ($_SESSION['user']['access_level'] == 'admin')) {
+                                    echo '<td><button type="button" class="btn btn-basic btn-lg delete" id="' . $row['gear_ID'] . "delete" . '">Delete Gear</button></td>';
+                                }
+                                echo '</tr>';
                             }
 
                             echo "</tbody></table>";
@@ -174,8 +175,8 @@
                     
                     
                     /* TEST USERNAME FOR FROM */
-                    var fromEmail = search_array[button_id]['email'];
-                    var fromUser = search_array[button_id]['username'];
+                    var fromEmail = <?php echo '$_SESSION["users"]["email"];' ;?>
+                    var fromUser = <?php echo '$_SESSION["users"]["username"];' ;?>
             
                     $.ajax({
                         method: "POST",
@@ -186,6 +187,25 @@
 //                        .done(function( msg ) {
 //                        alert( "Request Email Sent: " + msg );
 //                    }); Debug Message Purpose
+
+                    
+                });
+                /* Delete Button */
+                $("button.delete").click(function () {
+                    console.log("test"); // TEST
+                    var button_id = this.id;
+                    button_id = button_id.substring(0, button_id.indexOf('d'));
+                    window.location.href = "findgear.php?delete=" + button_id;
+                        
+                    
+                        
+                    <?php
+//                        $gear_id = $_GET["delete"];
+//                        $sql = "DELETE FROM gear WHERE gear_ID=$gear_id";
+//                        $db->exec($sql);
+
+//                        echo "<script>location.replace('findgear.php')</script>";
+                    ?>
                 });
             });
         </script>
