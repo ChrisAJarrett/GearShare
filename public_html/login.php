@@ -80,7 +80,7 @@ require_once('util/database.php');
                     <div class="row" style="padding-top:1vw">
                         <div class="col-xs-offset-2 col-xs-7 col-md-offset-5 col-md-2">
                             <label class="control-label" for="password">Password:</label>
-                            <input class="form-control" type="text" name="password" id="password" size="30">
+                            <input class="form-control" type="password" name="password" id="password" size="30">
                         </div>
                     </div>
 
